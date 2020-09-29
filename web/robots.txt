@@ -1,0 +1,4 @@
+User-agent: *
+Disallow:
+Host: www.s-solo.ru
+Sitemap: https://www.s-solo.ru/sitemap.xml
