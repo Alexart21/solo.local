@@ -54,15 +54,10 @@ class Content extends ActiveRecord
     {
         // имя экшена
         $act = Yii::$app->requestedAction->id;
-        $lastSql = 'CALL getLastFromContent(\'' . $act . '\')';
-        // die($lastSql);
-        $last = ActiveRecord::findBySql($lastSql)->asArray()->one();
-        $last = $last['last_mod']; // Unix timestamp для заголовка LastModified
 
         // дергаем кэш
         $data = Yii::$app->cache->get($act);
         if ($data) {
-            array_push($data, $last); // добавляем
             return $data;
         }
         /* Без хранимой процедуры */
@@ -77,7 +72,6 @@ class Content extends ActiveRecord
         // 18144000 - 30 дней
         //15552000 - 180 суток
         Yii::$app->cache->set($act, $data, 15552000);
-        array_push($data, $last);
         return $data;
     }
 }

@@ -1,4 +1,5 @@
 <?php
+if (!empty($msg)) die($msg); // сообщение об успехе/ошибке
 //die('view');
 /* @var $this yii\web\View */
 /* @var $form yii\bootstrap\ActiveForm */
@@ -71,6 +72,6 @@ Modal::end();
         document.body.style.cursor = 'default';
     });
     $('button.close').on('click', function () {
-        window.open('/catalog', '_self');
+        // window.open('/catalog', '_self');
     });
 </script>

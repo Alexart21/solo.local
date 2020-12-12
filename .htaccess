@@ -1,3 +1,6 @@
+# Без этого google reCapcha не хочит
+php_flag allow_url_fopen on
+
 Options +FollowSymLinks
 IndexIgnore */*
 RewriteEngine on
@@ -6,28 +9,8 @@ RewriteEngine on
 RewriteCond %{HTTPS} off
 RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
-# redirect на www
-#RewriteEngine On
-RewriteCond %{HTTP_HOST} ^s-solo.ru$ [NC]
-RewriteRule ^(.*)$ https://www.s-solo.ru/$1 [R=301,L]
+# redirect с www на без www
+RewriteCond %{HTTP_HOST} ^www\.(.*)$
+RewriteRule ^(.*)$ https://%1/$1 [L,R=301]
 
-RewriteCond %{REQUEST_URI} /
-RewriteRule ^favicon\.(ico|png)$ /web/favicon\.$1 [L]
-RewriteRule ^robots\.txt$ /web/robots.txt [L]
-RewriteRule ^phpinfo\.php$ /web/phpinfo.php [L]
-RewriteRule ^sitemap\.xml$ /web/sitemap.xml [L]
-RewriteRule ^assets/(.*)$ /web/assets/$1 [L]
-RewriteRule ^css/(.*)$ web/css/$1 [L]
-RewriteRule ^fonts/(.*)$ web/fonts/$1 [L]
-RewriteRule ^js/(.*)$ web/js/$1 [L]
-RewriteRule ^img/(.*)$ web/img/$1 [L]
-RewriteRule ^upload/(.*)$ web/upload/$1 [L]
-RewriteRule ^minify/(.*)$ web/minify/$1 [L]
-RewriteRule ^files/(.*)$ web/files/$1 [L]
-RewriteRule ^catalog\.pdf$ web/files/catalog.pdf [L]
 RewriteRule (.*) /web/$1
-
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{REQUEST_FILENAME} !-l
-RewriteRule . /web/index.php

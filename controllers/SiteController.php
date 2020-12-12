@@ -8,9 +8,7 @@ use app\models\ContactForm;
 use app\models\Content;
 use app\models\LoginForm;
 use app\models\callForm;
-//use yii\filters\AccessControl;
-//use yii\filters\VerbFilter;
-//use yii\helpers\Url;
+use app\models\IndexForm;
 use yii\web\Controller;
 
 class SiteController extends Controller
@@ -59,24 +57,23 @@ class SiteController extends Controller
             'error' => [
                 'class' => 'yii\web\ErrorAction',
             ],
-            'captcha' => [
+            /*'captcha' => [
                 'class' => 'yii\captcha\CaptchaAction',
                 'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
-            ],
+            ],*/
         ];
     }
 
     public function actionIndex()
     {
-//        $this->enableCsrfValidation = false;
-
         $request = Yii::$app->request;
-
+        $indexForm = new IndexForm();
         if($request->isPost){ // отправка с формы на главной странице
-
+//            var_dump($request->post('pdf'));die;
             $subject = 'Обратный звонок';
-            $name = Html::encode(mb_ucfirst($request->post('name')));
-            $tel = Html::encode($request->post('tel'));
+            $mess = $request->post('mess') ? Html::encode(mb_ucfirst($request->post('mess'))) : null;
+            $name = $request->post('name') ? Html::encode(mb_ucfirst($request->post('name'))) : null;
+            $tel = $request->post('tel') ? Html::encode($request->post('tel')) : null;
 
             $body = 'Клиент &nbsp;<b style="font-size: 120%;text-shadow: 0 1px 0 #e61b05">' . $name . '</b>&nbsp; просит перезвонить.<br>' .
                 'Тел. :&nbsp;&nbsp;<b style="font-size: 110%;>' . $tel . '</b>';
@@ -87,15 +84,20 @@ class SiteController extends Controller
                 ->setSubject($subject)
                 ->setHtmlBody($body)
                 ->send();
-
-//die($success);
-
             if ($success) {
-                $msg = '<h3 style="color:green;text-align: center">Спасибо,  ожидайте звонка!</h3>';
-                header('Refresh:3;url= http://solo.local/catalog');
+                /* Мудак придумал этот редирект на pdf файл */
+            if ($request->post('pdf') == '1') {
+                    return $this->redirect('/catalog');
+                }
+                $msg = '<h3 style="color:green;text-align: center">Спасибо,' . $name . '  ожидайте звонка!</h3>';
             } else{
                 $msg = '<h3 style="color:red;text-align: center">Ошибка !</h3>';
             }
+
+            /* Мудак придумал этот редирект на pdf файл */
+//            if ($request->post('pdf') == '1') {
+//                header('Refresh:3;url= http://solo.local/catalog');
+//            }
 
             return $this->renderAjax('zvonok_ok', compact('name', 'tel', 'msg', 'body'));
         }
@@ -103,7 +105,7 @@ class SiteController extends Controller
         $model = new Content();
         $data = $model->getContent();
 
-        return $this->render('index', ['data' => $data]);
+        return $this->render('index', compact('data', 'indexForm'));
     }
 
     /**
@@ -195,12 +197,14 @@ class SiteController extends Controller
     public function actionCall()
     {
         $model = new callForm();
-
-        if ($model->load(Yii::$app->request->post())) { // данные пришли
-//            $this->registerJs('alert("POST")');
-            $model->callSend(); // валидация, отправка почты, вывод сообщения об успехе(ошибке) и завершение скрипта
+        $request = Yii::$app->request;
+        if ($request->isAjax && $request->isPost) { // форма отправлена
+            if($model->load($request->post()) && $model->validate()) {
+                $msg = $model->callSend(); // валидация, отправка почты, вывод сообщения об успехе(ошибке) и завершение скрипта
+                return $this->renderAjax('call', compact('msg'));
+            }
         }
-
+        // выводим форму
         return $this->renderAjax('call', ['model' => $model]);
     }
 

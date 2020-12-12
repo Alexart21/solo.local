@@ -1,10 +1,11 @@
 <?php
+//debug($data);die;
 use yii\widgets\ActiveForm;
 use yii\widgets\MaskedInput;
 use yii\widgets\Pjax;
 //use yii\helpers\Html;
 
-header('Last-Modified:' . gmdate("D, d M Y H:i:s \G\M\T", $data[1]));
+header('Last-Modified:' . gmdate("D, d M Y H:i:s \G\M\T", $data[0]['last_mod']));
 $this->title = $data[0]['title'];
 $this->registerMetaTag(['name' => 'keywords', 'content' => $data[0]['keywords']]);
 $this->registerMetaTag(['name' => 'description', 'content' => $data[0]['descrition']]);
@@ -110,7 +111,7 @@ $this->registerMetaTag(['name' => 'description', 'content' => $data[0]['descriti
                 ]);
                 ?>
                 <div class="h3">Ваше имя:</div>
-                <input type="text" id="mess-name" name="name" placeholder="например Елена" required>
+                <input type="text" name="name" placeholder="например Елена" required>
                 <br>
                 <br>
                 <p class="h3">Ваш номер телефона:</p>
@@ -125,7 +126,13 @@ $this->registerMetaTag(['name' => 'description', 'content' => $data[0]['descriti
                     'mask' => '+7 (999)-999-99-99',
                 ]);
                 ?>
-                <!--            <i class=" fa fa-phone-volume"></i>-->
+                <?= $form->field($indexForm, 'reCaptcha')->widget(
+                    \himiklab\yii2\recaptcha\ReCaptcha3::className(),
+                    [
+                        'siteKey' => '6Le5fgIaAAAAAP5WhDlLtheUqavfIo-QbRlk6IMM', // unnecessary is reCaptcha component was set up
+                        'action' => 'index',
+                    ]);
+                ?>
                 <br>
                 <br>
                 <button type="submit"  class="btn-red">оставить заявку</button>
@@ -159,7 +166,7 @@ $this->registerMetaTag(['name' => 'description', 'content' => $data[0]['descriti
             ]);
             ?>
             <b class="credit-form-label">Ваше имя:</b>
-            <input type="text" id="mess-name" name="name" placeholder="например Елена" required>
+            <input type="text" name="name" placeholder="например Елена" required>
             <br>
             <br>
             <b class="credit-form-label">Ваш номер телефона:</b>
@@ -182,6 +189,13 @@ $this->registerMetaTag(['name' => 'description', 'content' => $data[0]['descriti
             <br>
             <b class="credit-form-label">Желаемый ежемесячный платеж:</b>
             <input type="text" id="payments" name="payments" placeholder="например 10 000" required>
+            <?= $form->field($indexForm, 'reCaptcha')->widget(
+                \himiklab\yii2\recaptcha\ReCaptcha3::className(),
+                [
+                    'siteKey' => '6Le5fgIaAAAAAP5WhDlLtheUqavfIo-QbRlk6IMM', // unnecessary is reCaptcha component was set up
+                    'action' => 'index',
+                ]);
+            ?>
             <br>
             <br>
             <button type="submit"  class="btn-red">оставить заявку</button>
@@ -235,7 +249,7 @@ $this->registerMetaTag(['name' => 'description', 'content' => $data[0]['descriti
                 ]);
                 ?>
                 <div class="h3">Ваше имя:</div>
-                <input type="text" onfocus="true" id="mess-name" name="name" tabindex="1" placeholder="например Елена" required>
+                <input type="text" onfocus="true" name="name" tabindex="1" placeholder="например Елена" required>
                 <br>
                 <br>
                 <p class="h3">Ваш номер телефона:</p>
@@ -261,6 +275,13 @@ $this->registerMetaTag(['name' => 'description', 'content' => $data[0]['descriti
                 <input type="text" name="dop" tabindex="4" placeholder="напр. после 17-00">
                 <br>
                 <br>
+                <?= $form->field($indexForm, 'reCaptcha')->widget(
+                    \himiklab\yii2\recaptcha\ReCaptcha3::className(),
+                    [
+                        'siteKey' => '6Le5fgIaAAAAAP5WhDlLtheUqavfIo-QbRlk6IMM', // unnecessary is reCaptcha component was set up
+                        'action' => 'index',
+                    ]);
+                ?>
                 <button type="submit"  class="btn-red">записаться на замер</button>
                 <br>
                 <?php ActiveForm::end(); ?>
@@ -537,6 +558,13 @@ $this->registerMetaTag(['name' => 'description', 'content' => $data[0]['descriti
             <?php $form = ActiveForm::begin([
                 'options' => ['class' => 'call zvonok-form', 'data-pjax' => true],
             ]);
+            ?>
+            <?= $form->field($indexForm, 'reCaptcha')->widget(
+                \himiklab\yii2\recaptcha\ReCaptcha3::className(),
+                [
+                    'siteKey' => '6Le5fgIaAAAAAP5WhDlLtheUqavfIo-QbRlk6IMM', // unnecessary is reCaptcha component was set up
+                    'action' => 'index',
+                ]);
             ?>
             <input type="text" name="name" placeholder="имя" , required>
             <!--        --><? //= $form->field($model, 'name')->textInput(['required' => true, 'tabindex' => '1']) ?>

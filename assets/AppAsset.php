@@ -14,7 +14,7 @@ class AppAsset extends AssetBundle
         'css/superfish.css',
         'css/easy-responsive-tabs.css',
 //        'css/fontawesome-all.min.css',
-        'css/font-awesome.min.css',
+        'css/fontawesome-all.min.css',
         'css/style.css'
     ];
     public $js = [
@@ -23,6 +23,8 @@ class AppAsset extends AssetBundle
         'js/easyResponsiveTabs.js',
 //        'js/jquery.bgswitcher.js',
 //        'js/wow.min.js',
+        'js/velocity.min.js',
+        'js/velocity.ui.min.js',
         'js/main.js'
     ];
     public $depends = [

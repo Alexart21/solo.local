@@ -25,10 +25,13 @@ function form_call(content, id) {
     });
 }
 // анимация загрузки
+const ldr = document.querySelector('#container_loading');
 function loading() {
     document.body.style.cursor = 'progress';
+    ldr.style.visibility = 'visible';
 }
 // стоп анимации
 function loading_stop() {
     document.body.style.cursor = "";
+    ldr.style.visibility = '';
 }

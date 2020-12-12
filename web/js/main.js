@@ -2,11 +2,11 @@
 
 
     // iPad and iPod detection
-    var isiPad = function () {
+    let isiPad = function () {
         return (navigator.platform.indexOf("iPad") != -1);
     }
 
-    var isiPhone = function () {
+    let isiPhone = function () {
         return (
             (navigator.platform.indexOf("iPhone") != -1) ||
             (navigator.platform.indexOf("iPod") != -1)
@@ -14,7 +14,7 @@
     }
 
     // Mobile Menu Clone ( Mobiles/Tablets )
-    var mobileMenu = function () {
+    let mobileMenu = function () {
         if ($(window).width() < 769) {
             $('html,body').addClass('fh5co-overflow');
 
@@ -63,7 +63,7 @@
 
 
     // Click outside of the Mobile Menu
-    var mobileMenuOutsideClick = function () {
+    const mobileMenuOutsideClick = function () {
         $(document).click(function (e) {
             var container = $("#fh5co-mobile-menu, #fh5co-mobile-menu-btn");
             if (!container.is(e.target) && container.has(e.target).length === 0) {
@@ -74,7 +74,7 @@
 
 
     // Mobile Button Click
-    var mobileBtnClick = function () {
+    const mobileBtnClick = function () {
         // $('#fh5co-mobile-menu-btn').on('click', function(e){
         $(document).on('click', '#fh5co-mobile-menu-btn', function (e) {
             e.preventDefault();
@@ -89,7 +89,7 @@
 
 
     // Main Menu Superfish
-    var mainMenu = function () {
+    const mainMenu = function () {
 
         $('#fh5co-primary-menu').superfish({
             delay: 0,
@@ -104,7 +104,7 @@
     };
 
     // Superfish Sub Menu Click ( Mobiles/Tablets )
-    var mobileClickSubMenus = function () {
+    const mobileClickSubMenus = function () {
 
         $('body').on('click', '.fh5co-sub-ddown', function (event) {
             event.preventDefault();
@@ -116,7 +116,7 @@
     };
 
     // Window Resize
-    var windowResize = function () {
+    const windowResize = function () {
         $(window).resize(function () {
             mobileMenu();
         });
@@ -315,19 +315,128 @@ $(function ($) {
 
 });
 /************/
+/*const  mesInp = document.getElementById('mess-name');
 function watsapp(){
-    var  mes = document.getElementById('mess-name');
-    mes.value = 'watsapp';
+    mesInp.value = 'watsapp';
 }
 
 function viber(){
-    var  mes = document.getElementById('mess-name');
-    mes.value = 'viber';
+    mesInp.value = 'viber';
 }
 
 function telegram(){
-    var  mes = document.getElementById('mess-name');
-    mes.value = 'telegram';
-}
+    mesInp.value = 'telegram';
+}*/
+
 
 /**/
+// Окно чата/мессенджеров
+
+
+///
+window.onload = () => {
+    // блок в шапке с иконками мессенджеров
+    $('#ms').show(400);
+
+    let selectedEl;
+    const mess =  document.querySelector('#msg-icon');
+    mess.onclick = (e) => {
+        let el = e.target;
+        if(!el) return;
+        // console.log(el);
+        highlight(el);
+    };
+    // подсветка
+    function highlight(el) {
+        if (selectedEl) { // убрать существующую подсветку, если есть
+            selectedEl.classList.remove('selected-mess');
+        }
+        selectedEl = el;
+        selectedEl.classList.add('selected-mess'); // подсветить новый li
+    }
+
+        ///
+    let msgBlock = document.getElementById('msg-block'),
+        msgContent = document.getElementById('msg-content'),
+        msgImg = document.querySelector('.msg-img'),
+        msgClosed = document.querySelector('.msg-closed');
+    // несколько задержек
+    setTimeout(showMsg, 3000); //  показываем блок с чатом
+    setTimeout(showTooltip, 6000); // показываем всплывающую подсказку/приглашение
+    setTimeout(rmTooltip, 14000); // скрываем подсказку
+    setTimeout(rmMsgAnim, 30000); // выключаем анимацию
+
+    msgContent.addEventListener('click', () => { // разворачиваем окно чата
+        if (msgBlock.hasAttribute('data-closed')) { // свернуто
+            // msgBlock.style.height = '370px';
+            msgBlock.classList.add('msg-opened');
+            msgBlock.style.background = 'url(/img/wats-bg.gif)';
+            msgBlock.style.boxShadow = '0 0 30px #999';
+            msgImg.style.right = '134px';
+            msgImg.style.opacity = '0.7';
+            msgClosed.style.display = 'none';
+            msgBlock.removeAttribute('data-closed');
+            showMsg();
+        }
+    });
+//
+    const msgClose = document.querySelector('#msg-block button');
+    msgClose.addEventListener('click', () => { // сворачиваем окно чата
+        if (!msgBlock.hasAttribute('data-closed')) { // окно не свернуто
+            msgImg.style.right = '';
+            msgImg.style.opacity = '';
+            // msgBlock.style.height = '';
+            msgBlock.classList.remove('msg-opened');
+            msgBlock.style.background = '';
+            msgBlock.style.boxShadow = '';
+            msgClosed.style.display = '';
+            msgBlock.setAttribute('data-closed', '');
+        }
+    });
+//
+
+    msgBlock.addEventListener('mouseover', () => { // по наведению мыши тож прибиваем
+        rmTooltip();
+    });
+};
+/* Далее ф-ии */
+// показ окна чата с анимацией
+const showMsg = () => {
+    $('#msg-block').velocity('transition.bounceIn');
+    // msgBlock.style.display = 'block';
+};
+//Всплывающая подсказка над чатом
+const showTooltip = () => {
+    // if(msgBlock.hasAttribute('data-closed') && !readCookie('msg')) {
+        let promise = document.querySelector('audio').play();
+        if (promise !== undefined) {
+            promise.then(_ => {
+                console.log('play!');
+            }).catch(err => {
+                console.log(err.message);
+            });
+        }
+        $('[data-toggle="tooltip"]').tooltip('show');
+        // document.cookie = "msg=1;max-age=3600;path=/"; // куку на час(в течении этого времени больше не будет всплывающих подсказок)
+    // }
+};
+// // убиваем tooltip
+const rmTooltip = () => {
+    let tltp = document.querySelector('.tooltip');
+    if(tltp){
+        tltp.remove();
+    }
+};
+//
+const rmMsgAnim = () => { // нефиг всю дорогу мерцать
+    const bar = document.querySelector('.msg-closed').classList;
+    bar.remove('button-anim');
+};
+
+// доставание cookie
+function readCookie(name) {
+    const matches = document.cookie.match(new RegExp(
+        "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+    ));
+    return matches ? decodeURIComponent(matches[1]) : undefined;
+}

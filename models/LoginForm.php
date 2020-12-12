@@ -16,7 +16,7 @@ class LoginForm extends Model
     public $username;
     public $password;
     public $rememberMe = false;
-    public $verifyCode;
+//    public $verifyCode;
 
     private $_user = false;
 
@@ -34,7 +34,7 @@ class LoginForm extends Model
             // password is validated by validatePassword()
             ['password', 'validatePassword'],
             // verifyCode needs to be entered correctly
-            ['verifyCode', 'captcha'],
+//            ['verifyCode', 'captcha'],
         ];
     }
 
@@ -44,7 +44,7 @@ class LoginForm extends Model
             'username' => 'Логин',
             'password' => 'Пароль',
             'rememberMe' => 'Запомнить меня',
-            'verifyCode' => 'Введите код',
+//            'verifyCode' => 'Введите код',
         ];
     }
 

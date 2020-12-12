@@ -32,15 +32,20 @@ Modal::end();
         document.body.style.cursor = 'default';
     });
     /////
-    // через 3 сек удаляем сообщение
-    var timerId = setInterval(function() {
-        $('#zv').modal('hide');
-        window.open('/catalog', '_self');
-    }, 3000);
-
+    // через 4 сек удаляем сообщение
     setTimeout(function() {
+        $('#zv').modal('hide');
+        // Очищаем все формы
+        const f = document.forms;
+        for(let i=0; i<f.length; i++){
+            f[i].reset();
+        }
+        // window.open('/catalog', '_self');
+    }, 4000);
+
+    /*setTimeout(function() {
         clearInterval(timerId);
-    }, 3000);
+    }, 3000);*/
 </script>
 <?php
 //    sleep(3);

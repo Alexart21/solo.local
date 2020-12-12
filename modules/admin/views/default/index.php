@@ -22,7 +22,7 @@ $user = strtolower(Yii::$app->user->identity->username);
             ],
             'enablePushState'=>false, // не обновлять url
             'linkSelector' => '.pjax', //обрабатывать через pjax только отдельные ссылки
-            'timeout' => '5000',
+            'timeout' => '30000',
         ]);
     ?>
 
@@ -32,4 +32,19 @@ $user = strtolower(Yii::$app->user->identity->username);
         <h3><a href="/admin/content">Содержимое основных страниц</a> (таблица Content)</h3>
         <h3><a href="/admin/galery">Фотогалерея</a></h3>
     <?php endif; ?>
+    <?php
+    $dirArr = require_once __DIR__ . '/../inc/dirArr.php';
+    ?>
+    <hr>
+    <a class="btn btn-info pjax" data-toggle="tooltip" title="Очистка временных папок(Рекомендуется перед бэкапом)" href="/admin/default/clear">Очистка</a>
+    <ol style="float: bottom">
+        Очищаются папки:
+        <?php
+        foreach ($dirArr as $item) :
+            ?>
+            <li><?= $item ?></li>
+        <?php
+        endforeach;
+        ?>
+    </ol>
 </div>

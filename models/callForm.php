@@ -59,14 +59,7 @@ class callForm extends Model
             ->setHtmlBody($body)
             ->send();
 
-        if ($success) {
-            if ($this->validate()) {
-//                debug($_POST['callform']);die;
-                echo('<h3 style="color:green">Спасибо, ' . $name . ', Мы Вам обязательно перезвоним</h3>');
-            }
-        } else{
-            echo('<h3 style="color:red">Ошибка !</h3>');
-        }
-        die;
+        $msg = $success ? '<h3 style="color:green">Спасибо, ' . $name . ', Мы Вам обязательно перезвоним</h3>' : '<h3 style="color:green">Сбой, попробуйте еще раз или свяжитесь другим способом</h3>';
+        return $msg;
     }
 }
